@@ -1,0 +1,6 @@
+[submodule "cinemory-backend"]
+	path = cinemory-backend
+	url = git@github.com:timmy38233/cinemory-backend.git
+[submodule "cinemory-frontend"]
+	path = cinemory-frontend
+	url = git@github.com:timmy38233/cinemory-frontend.git
