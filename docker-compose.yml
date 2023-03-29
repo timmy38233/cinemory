@@ -56,6 +56,8 @@ services:
       - ${PWD}/cinemory-backend:/var/www/cinemory-backend:delegated
       # this will mount the custom `.ini` to the container
       - ${PWD}/docker/php/php.ini:/usr/local/etc/php/php.ini:ro
+      - ${PWD}/docker/php/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+      - ${PWD}/var/logs/xdebug/:/var/log/xdebug/
     networks:
       - cinemorynet
 
