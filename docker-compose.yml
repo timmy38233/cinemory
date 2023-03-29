@@ -18,7 +18,35 @@ services:
       - cinemory-backend
       - cinemory-frontend
     networks:
-      - monitoring
+      - cinemorynet
+
+  db:
+    image: mysql
+    container_name: db
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: cinemory
+      MYSQL_USER: cinemory_user
+      MYSQL_PASSWORD: cinemory_password
+    volumes:
+      - dbdata:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - cinemorynet
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: pma
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1
+    restart: always
+    ports:
+      - 8081:80
+    networks:
+      - cinemorynet
 
   cinemory-backend:
     build: docker/php
@@ -29,7 +57,7 @@ services:
       # this will mount the custom `.ini` to the container
       - ${PWD}/docker/php/php.ini:/usr/local/etc/php/php.ini:ro
     networks:
-      - monitoring
+      - cinemorynet
 
   cinemory-frontend:
     build: ./cinemory-frontend
@@ -39,7 +67,7 @@ services:
     depends_on:
       - cinemory-backend
     networks:
-      - monitoring
+      - cinemorynet
     volumes:
       # this will mount the cinemory-frontend folder which contains the code to the docker container
       - ${PWD}/cinemory-frontend:/var/www/cinemory-frontend:delegated
@@ -49,9 +77,10 @@ services:
     - "3000:3000"
 
 networks:
-  monitoring:
+  cinemorynet:
     driver: bridge
 
 # volumes
 volumes:
   nodemodules: {}
+  dbdata: {}

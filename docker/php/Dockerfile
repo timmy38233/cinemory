@@ -17,6 +17,7 @@ RUN apk update \
 RUN apk add --no-cache $PHPIZE_DEPS \
     && pecl install -f xdebug \
     && docker-php-ext-install intl opcache bcmath sockets \
+    && docker-php-ext-install pdo pdo_mysql mysqli \
     && docker-php-ext-enable xdebug intl opcache bcmath sockets \
     && rm -rf /var/lib/apt/lists/*
 
